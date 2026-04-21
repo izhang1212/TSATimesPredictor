@@ -1,0 +1,43 @@
+Tables: airports, wait_times, throughput, flights, weather
+
+Everything joins on (airport_code, date, hour).
+
+This file assumes normalization has already been done. Each collection script
+in data/ is responsible for producing a clean CSV in data/normalized/ with the
+exact schema expected below. build_db.py does not parse dates, melt columns,
+or aggregate — it just loads clean rows into SQLite.
+
+Expected normalized CSV schemas:
+
+    data/normalized/wait_times.csv
+        airport_code (str, uppercase 3-letter)
+        date         (str, YYYY-MM-DD)
+        hour         (int, 0-23)
+        wait_minutes (float)
+        user_reported (int, 0 if none)
+        source       (str, e.g. 'tsawaittimes', 'mytsa')
+
+    data/normalized/throughput.csv
+        airport_code (str)
+        date         (str, YYYY-MM-DD)
+        hour         (int, 0-23)
+        checkpoint   (str, e.g. 'Terminal 1')
+        passengers   (int)
+
+    data/normalized/flights.csv
+        airport_code      (str)
+        date              (str, YYYY-MM-DD)
+        hour              (int, 0-23)
+        num_departures    (int)
+        num_cancelled     (int)
+        num_international (int)
+        avg_delay_min     (float)
+
+    data/normalized/weather.csv
+        airport_code (str)
+        date         (str, YYYY-MM-DD)
+        hour         (int, 0-23)
+        temp_f       (float)
+        wind_mph     (float)
+        precip_in    (float)
+        conditions   (str)

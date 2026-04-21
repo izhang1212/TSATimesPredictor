@@ -7,5 +7,5 @@ data/processed/
 saved_models/
 .env
 
-data/processed/
-TsaThroughput
+data/
+
