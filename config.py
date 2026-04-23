@@ -80,6 +80,47 @@ FEATURES = [
     "staffing_modifier", "extreme_weather_flag",
 ]
 
+# lightgbm hyperparameters
+LGB_PARAMS = {
+    "objective": "regression",
+    "metric": "mae",
+    "learning_rate": 0.05,
+    "num_leaves": 63,
+    "max_depth": -1,
+    "min_data_in_leaf": 20,
+    "feature_fraction": 0.9,
+    "bagging_fraction": 0.9,
+    "bagging_freq": 5,
+    "verbose": -1,
+    "seed": 42,
+}
+
+# lightgbm training settings
+LGB_NUM_BOOST_ROUND = 1000
+LGB_EARLY_STOPPING_ROUNDS = 50
+LGB_TEST_SET_FRACTION = 0.2
+
+# prophet hyperparameters
+PROPHET_PARAMS = {
+    "yearly_seasonality": True,
+    "weekly_seasonality": True,
+    "daily_seasonality": True,
+    "seasonality_mode": "multiplicative",
+    "changepoint_prior_scale": 0.05,
+    "interval_width": 0.80,
+}
+
+# prophet training settings
+PROPHET_TEST_SET_FRACTION = 0.2
+
+# wait time tier buckets (minutes)
+WAIT_TIME_TIERS = {
+    "short":    (0, 10),
+    "moderate": (10, 20),
+    "busy":     (20, 30),
+    "heavy":    (30, 999),
+}
+
 TARGET = "wait_minutes"
 
 # path for database

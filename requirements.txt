@@ -1,4 +1,3 @@
-xgboost
 lightgbm
 prophet
 pandas
@@ -7,3 +6,4 @@ scikit-learn
 requests
 schedule
 joblib
+holidays
