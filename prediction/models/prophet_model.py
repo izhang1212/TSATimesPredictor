@@ -10,7 +10,7 @@ import pandas as pd
 from prophet import Prophet
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
-from config import (
+from prediction.config import (
     AIRPORTS,
     PROPHET_PARAMS,
     PROPHET_TEST_SET_FRACTION,

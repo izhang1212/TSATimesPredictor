@@ -8,14 +8,14 @@ import pandas as pd
 from datetime import datetime, timedelta
 import holidays
 
-from config import (
+from prediction.config import (
     FEATURES,
     STAFFING_MODIFIERS,
     SHUTDOWN_PERIODS,
     WAIT_TIME_TIERS,
 )
-from models.lightgbm_model import load_model as load_lgb_model, predict as lgb_predict
-from models.prophet_model import load_models as load_prophet_models, predict as prophet_predict
+from prediction.models.lightgbm_model import load_model as load_lgb_model, predict as lgb_predict
+from prediction.models.prophet_model import load_models as load_prophet_models, predict as prophet_predict
 
 TRAINING_DATA_PATH = "data/exports/training_data_final.csv"
 LGB_METRICS_PATH = "models/saved/lightgbm_metrics.json"

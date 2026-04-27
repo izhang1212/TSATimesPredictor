@@ -8,7 +8,7 @@ import pandas as pd
 import lightgbm as lgb 
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
-from config import (
+from prediction.config import (
     FEATURES, TARGET, LGB_PARAMS, LGB_NUM_BOOST_ROUND, LGB_EARLY_STOPPING_ROUNDS, LGB_TEST_SET_FRACTION
 )
 
