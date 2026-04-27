@@ -5,7 +5,7 @@ from datetime import date, timedelta
 import pandas as pd
 import holidays
 
-from config import STAFFING_MODIFIERS, SHUTDOWN_PERIODS
+from prediction.config import STAFFING_MODIFIERS, SHUTDOWN_PERIODS
 
 INPUT_PATH = "data/exports/training_data.csv"
 OUTPUT_PATH = "data/exports/training_data_final.csv"
@@ -78,9 +78,7 @@ def build_features(input_path=INPUT_PATH, output_path=OUTPUT_PATH):
     # Drop the helper column
     df = df.drop(columns=["_date_obj"])
 
-    # ------------------------------------------------------------------
     # Missing value handling
-    # ------------------------------------------------------------------
     # Lag features: may be NaN for early rows (no history yet). Fill with 0.
     for col in ["wait_same_hour_last_week", "wait_avg_last_4_weeks_same_hour_dow"]:
         if col in df.columns:
@@ -96,9 +94,7 @@ def build_features(input_path=INPUT_PATH, output_path=OUTPUT_PATH):
     if "extreme_weather_flag" in df.columns:
         df["extreme_weather_flag"] = df["extreme_weather_flag"].fillna(0).astype(int)
 
-    # ------------------------------------------------------------------
     # Write out
-    # ------------------------------------------------------------------
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
     df.to_csv(output_path, index=False)
     return len(df)

@@ -64,8 +64,8 @@ def evaluate(model, X_test, Y_test):
     rmse = np.sqrt(mean_squared_error(Y_test, preds))
 
     # within-N-minutes accuracy: how often we're within X minutes of actual
-    within_5 = np.mean(np.abs(preds - y_test) <= 5)
-    within_10 = np.mean(np.abs(preds - y_test) <= 10)
+    within_5 = np.mean(np.abs(preds - Y_test) <= 5)
+    within_10 = np.mean(np.abs(preds - Y_test) <= 10)
 
     return {
         "mae": float(mae),
@@ -101,10 +101,9 @@ def save_metrics(metrics, path=METRICS_PATH):
 def predict(model, X):
     return model.predict(X, num_iteration=model.best_iteration)
 
-"""
-Full pipeline: load data -> split -> train -> evaluate -> save.
-Returns a results dict with metrics, feature importance, and paths.
-"""
+
+# Full pipeline: load data -> split -> train -> evaluate -> save.
+    # Returns a results dict with metrics, feature importance, and paths.
 def run_training_pipeline():
     X, y, df = load_training_data()
     X_train, X_test, y_train, y_test = time_based_split(X, y)

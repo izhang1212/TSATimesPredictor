@@ -1,21 +1,16 @@
-"""
-build_db.py - loads normalized data from data/normalized/ into tsa.db
-"""
+# build_db.py - loads normalized data from data/normalized/ into tsa.db
 
 import os
 import sqlite3
 from pathlib import Path
 
 import pandas as pd
-from config import DB_PATH, AIRPORTS, AIRPORT_INFO
+from prediction.config import DB_PATH, AIRPORTS, AIRPORT_INFO
 
 NORMALIZED_DIR = "data/normalized"
 EXPORT_DIR = "data/exports"
 
-
-# ---------------------------------------------------------------------------
 # DB setup: create/connect and ensure all tables exist
-# ---------------------------------------------------------------------------
 def get_db(db_path=DB_PATH):
     os.makedirs(os.path.dirname(db_path), exist_ok=True)
     conn = sqlite3.connect(db_path)
@@ -85,12 +80,9 @@ def get_db(db_path=DB_PATH):
     conn.commit()
     return conn
 
-
-# ---------------------------------------------------------------------------
 # Generic loader: given a dataframe + table + columns, do a bulk insert
-# ---------------------------------------------------------------------------
+    # Insert rows from a normalized dataframe into the given table
 def _bulk_insert(conn, df, table, columns):
-    """Insert rows from a normalized dataframe into the given table."""
     if df.empty:
         return 0
 
@@ -111,11 +103,9 @@ def _bulk_insert(conn, df, table, columns):
     return len(df)
 
 
-# ---------------------------------------------------------------------------
 # Table loaders: each one reads a single normalized CSV and inserts it
-# ---------------------------------------------------------------------------
+    # Populate airports table from AIRPORT_INFO in config
 def load_airports(conn):
-    """Populate airports table from AIRPORT_INFO in config."""
     for code, (name, city, state, lat, lon) in AIRPORT_INFO.items():
         conn.execute("""
             INSERT OR REPLACE INTO airports (code, name, city, state, latitude, longitude)
@@ -169,11 +159,7 @@ def load_weather(conn, path=None):
         ["airport_code", "date", "hour", "temp_f", "wind_mph", "precip_in", "conditions"],
     )
 
-
-# ---------------------------------------------------------------------------
-# Export training data: joins all tables, derives engineered features,
-# and writes a flat CSV ready for model training.
-# ---------------------------------------------------------------------------
+# Export training data: joins all tables, derives engineered features, and writes a flat CSV ready for model training.
 def export_training_data(conn, output_path=None, airport_code=None):
     if output_path is None:
         output_path = os.path.join(EXPORT_DIR, "training_data.csv")
@@ -250,9 +236,7 @@ def export_training_data(conn, output_path=None, airport_code=None):
         df.to_csv(output_path, index=False)
         return 0
 
-    # ------------------------------------------------------------------
     # Derived lag features (computed in pandas, not SQL, for simplicity)
-    # ------------------------------------------------------------------
     df["datetime"] = pd.to_datetime(df["date"]) + pd.to_timedelta(df["hour"], unit="h")
     df = df.sort_values(["airport_code", "datetime"]).reset_index(drop=True)
 
@@ -282,11 +266,9 @@ def export_training_data(conn, output_path=None, airport_code=None):
     return len(df)
 
 
-# ---------------------------------------------------------------------------
 # Summary + full build
-# ---------------------------------------------------------------------------
+    # Return a dict of record counts per table
 def get_summary(conn):
-    """Return a dict of record counts per table."""
     tables = ["airports", "wait_times", "throughput", "flights", "weather"]
     return {
         t: conn.execute(f"SELECT COUNT(*) FROM {t}").fetchone()[0]

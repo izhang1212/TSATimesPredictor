@@ -138,29 +138,16 @@ def save_metrics(metrics, path=METRICS_PATH):
         json.dump(metrics, f, indent=2)
 
 
-# ---------------------------------------------------------------------------
 # Prediction interface
-# ---------------------------------------------------------------------------
 def predict(models_dict, airport_code, timestamps):
-    """
-    Predict wait times for a given airport at one or more timestamps.
-
-    Args:
-        models_dict:  dict of {airport_code: fitted Prophet model}
-        airport_code: str (e.g. 'JFK')
-        timestamps:   list-like of datetime-compatible values
-
-    Returns:
-        numpy array of predicted wait_minutes, or None if no model exists
-        for that airport.
-    """
     model = models_dict.get(airport_code)
     if model is None:
         return None
 
     future = pd.DataFrame({"ds": pd.to_datetime(timestamps)})
     forecast = model.predict(future)
-    return forecast["yhat"].values
+    preds = forecast["yhat"].values
+    return np.maximum(preds, 0.0)  # clamp negatives to 0
 
 
 # ---------------------------------------------------------------------------
