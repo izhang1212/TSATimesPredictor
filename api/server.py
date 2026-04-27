@@ -86,7 +86,7 @@ def predict(req: PredictionRequest):
     if code not in AIRPORTS:
         raise HTTPException(
             status_code=400,
-            detail=f"Unknown airport code: {code}. Must be one of: {AIRPORTS[:5]}...",
+            detail=f"Unknown airport code: {code}. Scroll down to see available airport locations.",
         )
 
     try:
