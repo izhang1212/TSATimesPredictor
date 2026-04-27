@@ -5,10 +5,11 @@ from datetime import date, timedelta
 import pandas as pd
 import holidays
 
-from prediction.config import STAFFING_MODIFIERS, SHUTDOWN_PERIODS
-
-INPUT_PATH = "data/exports/training_data.csv"
-OUTPUT_PATH = "data/exports/training_data_final.csv"
+from config import (
+    STAFFING_MODIFIERS, SHUTDOWN_PERIODS,
+    TRAINING_DATA_PATH as INPUT_PATH,
+    TRAINING_DATA_FINAL_PATH as OUTPUT_PATH,
+)
 
 def build_holiday_calendar(years):
     us_holidays = holidays.UnitedStates(years = years)

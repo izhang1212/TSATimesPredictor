@@ -8,13 +8,13 @@ import pandas as pd
 import lightgbm as lgb 
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
-from prediction.config import (
-    FEATURES, TARGET, LGB_PARAMS, LGB_NUM_BOOST_ROUND, LGB_EARLY_STOPPING_ROUNDS, LGB_TEST_SET_FRACTION
+from config import (
+    FEATURES, TARGET, LGB_PARAMS,
+    LGB_NUM_BOOST_ROUND, LGB_EARLY_STOPPING_ROUNDS, LGB_TEST_SET_FRACTION,
+    LGB_MODEL_PATH as MODEL_PATH,
+    LGB_METRICS_PATH as METRICS_PATH,
+    TRAINING_DATA_FINAL_PATH as INPUT_PATH,
 )
-
-INPUT_PATH = "data/exports/training_data_final.csv"
-MODEL_PATH = "models/saved/lightgbm_model.pkl"
-METRICS_PATH = "models/saved/lightgbm_metrics.json"
 
 # loading training data
 def load_training_data(input_path = INPUT_PATH):

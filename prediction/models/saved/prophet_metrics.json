@@ -1,0 +1,84 @@
+{
+  "overall": {
+    "mae": 10.862699714160613,
+    "rmse": 12.234346241629073,
+    "within_5_min": 0.20555555555555555,
+    "within_10_min": 0.4729166666666667,
+    "n_airports_trained": 5,
+    "n_airports_skipped": 35
+  },
+  "per_airport": {
+    "JFK": {
+      "mae": 9.997409921511455,
+      "rmse": 11.03234317794407,
+      "within_5_min": 0.18229166666666666,
+      "within_10_min": 0.4340277777777778,
+      "n_test_samples": 576
+    },
+    "LGA": {
+      "mae": 7.730271445564373,
+      "rmse": 8.584364464284763,
+      "within_5_min": 0.2361111111111111,
+      "within_10_min": 0.7083333333333334,
+      "n_test_samples": 576
+    },
+    "EWR": {
+      "mae": 12.21161535565925,
+      "rmse": 13.962120687187827,
+      "within_5_min": 0.19618055555555555,
+      "within_10_min": 0.375,
+      "n_test_samples": 576
+    },
+    "ATL": {
+      "mae": 15.863131853427843,
+      "rmse": 17.869855734506153,
+      "within_5_min": 0.140625,
+      "within_10_min": 0.2829861111111111,
+      "n_test_samples": 576
+    },
+    "LAX": {
+      "mae": 8.51106999464014,
+      "rmse": 9.723047144222546,
+      "within_5_min": 0.2725694444444444,
+      "within_10_min": 0.5642361111111112,
+      "n_test_samples": 576
+    }
+  },
+  "skipped": [
+    "BOS",
+    "PHL",
+    "DCA",
+    "IAD",
+    "BWI",
+    "BDL",
+    "PIT",
+    "MIA",
+    "FLL",
+    "MCO",
+    "CLT",
+    "TPA",
+    "BNA",
+    "RDU",
+    "JAX",
+    "ORD",
+    "MDW",
+    "DTW",
+    "MSP",
+    "CLE",
+    "MKE",
+    "STL",
+    "SFO",
+    "SAN",
+    "SEA",
+    "PDX",
+    "LAS",
+    "DEN",
+    "PHX",
+    "DFW",
+    "IAH",
+    "AUS",
+    "DAL",
+    "HOU",
+    "SAT"
+  ]
+}

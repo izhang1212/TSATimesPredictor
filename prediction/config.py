@@ -1,5 +1,26 @@
 # config.py - project config
 
+import os
+
+# Absolute path to the prediction/ directory
+PREDICTION_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Database
+DB_PATH = os.path.join(PREDICTION_DIR, "data", "tsa.db")
+
+# Saved models
+MODELS_SAVED_DIR = os.path.join(PREDICTION_DIR, "models", "saved")
+LGB_MODEL_PATH = os.path.join(MODELS_SAVED_DIR, "lightgbm_model.pkl")
+LGB_METRICS_PATH = os.path.join(MODELS_SAVED_DIR, "lightgbm_metrics.json")
+PROPHET_MODEL_PATH = os.path.join(MODELS_SAVED_DIR, "prophet_models.pkl")
+PROPHET_METRICS_PATH = os.path.join(MODELS_SAVED_DIR, "prophet_metrics.json")
+ENSEMBLE_WEIGHTS_PATH = os.path.join(MODELS_SAVED_DIR, "ensemble_weights.json")
+
+# Data exports (used by build_features)
+EXPORTS_DIR = os.path.join(PREDICTION_DIR, "data", "exports")
+TRAINING_DATA_PATH = os.path.join(EXPORTS_DIR, "training_data.csv")
+TRAINING_DATA_FINAL_PATH = os.path.join(EXPORTS_DIR, "training_data_final.csv")
+
 # airports and airport metadata
 AIRPORTS = [
     "JFK", "LGA", "EWR", "BOS", "PHL", "DCA", "IAD", "BWI", "BDL", "PIT",

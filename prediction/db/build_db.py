@@ -5,10 +5,10 @@ import sqlite3
 from pathlib import Path
 
 import pandas as pd
-from prediction.config import DB_PATH, AIRPORTS, AIRPORT_INFO
+from config import DB_PATH, AIRPORTS, AIRPORT_INFO
 
-NORMALIZED_DIR = "data/normalized"
-EXPORT_DIR = "data/exports"
+from config import EXPORTS_DIR as EXPORT_DIR, PREDICTION_DIR
+NORMALIZED_DIR = os.path.join(PREDICTION_DIR, "data", "normalized")
 
 # DB setup: create/connect and ensure all tables exist
 def get_db(db_path=DB_PATH):

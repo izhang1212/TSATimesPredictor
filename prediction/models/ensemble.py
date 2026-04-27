@@ -8,19 +8,14 @@ import pandas as pd
 from datetime import datetime, timedelta
 import holidays
 
-from prediction.config import (
-    FEATURES,
-    STAFFING_MODIFIERS,
-    SHUTDOWN_PERIODS,
-    WAIT_TIME_TIERS,
+from config import (
+    FEATURES, STAFFING_MODIFIERS, SHUTDOWN_PERIODS, WAIT_TIME_TIERS,
+    LGB_METRICS_PATH, PROPHET_METRICS_PATH,
+    ENSEMBLE_WEIGHTS_PATH as WEIGHTS_PATH,
+    TRAINING_DATA_FINAL_PATH as TRAINING_DATA_PATH,
 )
-from prediction.models.lightgbm_model import load_model as load_lgb_model, predict as lgb_predict
-from prediction.models.prophet_model import load_models as load_prophet_models, predict as prophet_predict
-
-TRAINING_DATA_PATH = "data/exports/training_data_final.csv"
-LGB_METRICS_PATH = "models/saved/lightgbm_metrics.json"
-PROPHET_METRICS_PATH = "models/saved/prophet_metrics.json"
-WEIGHTS_PATH = "models/saved/ensemble_weights.json"
+from models.lightgbm_model import load_model as load_lgb_model, predict as lgb_predict
+from models.prophet_model import load_models as load_prophet_models, predict as prophet_predict
 
 # Weight computation
 def compute_weights(lgb_mae, prophet_mae):

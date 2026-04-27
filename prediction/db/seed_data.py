@@ -25,7 +25,8 @@ from datetime import date, timedelta
 import numpy as np
 import pandas as pd
 
-NORMALIZED_DIR = "data/normalized"
+from config import PREDICTION_DIR
+NORMALIZED_DIR = os.path.join(PREDICTION_DIR, "data", "normalized")
 
 # Small subset for fast testing - full 40 airports would generate ~5M rows
 SEED_AIRPORTS = ["JFK", "LGA", "EWR", "ATL", "LAX"]

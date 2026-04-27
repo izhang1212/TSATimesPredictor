@@ -10,24 +10,18 @@ import pandas as pd
 from prophet import Prophet
 from sklearn.metrics import mean_absolute_error, mean_squared_error
 
-from prediction.config import (
-    AIRPORTS,
-    PROPHET_PARAMS,
-    PROPHET_TEST_SET_FRACTION,
+from config import (
+    AIRPORTS, PROPHET_PARAMS, PROPHET_TEST_SET_FRACTION,
+    PROPHET_MODEL_PATH as MODEL_PATH,
+    PROPHET_METRICS_PATH as METRICS_PATH,
+    TRAINING_DATA_FINAL_PATH as INPUT_PATH,
 )
-
-INPUT_PATH = "data/exports/training_data_final.csv"
-MODEL_PATH = "models/saved/prophet_models.pkl"
-METRICS_PATH = "models/saved/prophet_metrics.json"
 
 # Prophet is very chatty by default — silence its per-fit output
 logging.getLogger("prophet").setLevel(logging.WARNING)
 logging.getLogger("cmdstanpy").setLevel(logging.WARNING)
 
-
-# ---------------------------------------------------------------------------
 # Data loading and formatting
-# ---------------------------------------------------------------------------
 def load_training_data(input_path=INPUT_PATH):
     """Load the model-ready CSV and return it sorted chronologically."""
     if not os.path.exists(input_path):
@@ -57,10 +51,7 @@ def format_for_prophet(df_airport):
     })
     return out
 
-
-# ---------------------------------------------------------------------------
 # Train/test split (time-based, per airport)
-# ---------------------------------------------------------------------------
 def time_based_split(df_prophet, test_fraction=PROPHET_TEST_SET_FRACTION):
     """Split a single airport's Prophet-formatted df chronologically."""
     split_idx = int(len(df_prophet) * (1 - test_fraction))
@@ -68,10 +59,7 @@ def time_based_split(df_prophet, test_fraction=PROPHET_TEST_SET_FRACTION):
     test = df_prophet.iloc[split_idx:].reset_index(drop=True)
     return train, test
 
-
-# ---------------------------------------------------------------------------
 # Training (one airport)
-# ---------------------------------------------------------------------------
 def train_one_airport(train_df, params=None):
     """
     Fit a single Prophet model on one airport's training data.
@@ -89,10 +77,7 @@ def train_one_airport(train_df, params=None):
     model.fit(train_df)
     return model
 
-
-# ---------------------------------------------------------------------------
 # Evaluation (one airport)
-# ---------------------------------------------------------------------------
 def evaluate_one_airport(model, test_df):
     """Return MAE / RMSE / within-N metrics for a single airport's test set."""
     if model is None or test_df.empty:
@@ -117,10 +102,7 @@ def evaluate_one_airport(model, test_df):
         "n_test_samples": int(len(test_df)),
     }
 
-
-# ---------------------------------------------------------------------------
 # Persistence
-# ---------------------------------------------------------------------------
 def save_models(models_dict, path=MODEL_PATH):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     joblib.dump(models_dict, path)
@@ -149,10 +131,7 @@ def predict(models_dict, airport_code, timestamps):
     preds = forecast["yhat"].values
     return np.maximum(preds, 0.0)  # clamp negatives to 0
 
-
-# ---------------------------------------------------------------------------
 # End-to-end runner
-# ---------------------------------------------------------------------------
 def run_training_pipeline():
     """
     Train one Prophet model per airport, evaluate, save everything.
