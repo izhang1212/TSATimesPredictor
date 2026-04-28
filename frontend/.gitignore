@@ -44,3 +44,4 @@ next-env.d.ts
 frontend/.next/
 frontend/out/
 frontend/.env*.local
+

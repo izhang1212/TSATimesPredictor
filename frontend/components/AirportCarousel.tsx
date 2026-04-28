@@ -14,6 +14,11 @@ const AIRPORTS = [
     { code: "MCO", city: "Orlando", state: "Florida", image: "/images/airports/MCO.jpg" },
     { code: "PHL", city: "Philadelphia", state: "Pennsylvania", image: "/images/airports/PHL.jpg" },
     { code: "PHX", city: "Phoenix", state: "Arizona", image: "/images/airports/PHX.jpg" },
+    { code: "DCA", city: "Arlington", state: "Virginia", image: "/images/airports/DCA.jpg" },
+    { code: "DAL", city: "Dallas", state: "Texas", image: "/images/airports/DAL.jpg" },
+    { code: "JAX", city: "Jaxonville", state: "Florida", image: "/images/airports/JAX.jpg" },
+    { code: "SFO", city: "San Francisco", state: "California", image: "/images/airports/SFO.jpg" },
+    { code: "MIA", city: "Miami", state: "Florida", image: "/images/airports/MIA.jpg" },
 
 ];
 
