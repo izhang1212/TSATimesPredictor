@@ -73,7 +73,7 @@ export default function PredictionResult({
                     <div
                         className={`w-20 h-20 rounded-full ${severity.color} ${severity.glow} flex items-center justify-center leading-none`}
                     >
-                        <span className="font-serif text-3xl text-white leading-none -translate-y-1">{minutes}</span>
+                        <span className="font-serif text-3xl text-white leading-none -translate-y-1 -translate-x-0.15">{minutes}</span>
                     </div>
                     <span className="text-xs tracking-[0.2em] uppercase text-stone-soft font-medium">
                         {severity.label}
