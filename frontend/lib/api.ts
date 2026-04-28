@@ -24,10 +24,11 @@ export type PredictionResult = {
 };
 
 export type Airport = {
-    code: string;
-    name: string;
-    city: string;
-    state: string;
+  code: string;
+  name: string;
+  city: string;
+  state: string;       
+  state_full: string;  
 };
 
 export async function fetchAirports(): Promise<Airport[]> {

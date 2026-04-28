@@ -1,49 +1,36 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-
-const AIRPORTS = [
-    { code: "JFK", city: "New York", state: "New York", image: "/images/airports/jfk.jpg" },
-    { code: "LGA", city: "New York", state: "New York", image: "/images/airports/lga.jpg" },
-    { code: "EWR", city: "Newark", state: "New Jersey", image: "/images/airports/ewr.jpg" },
-    { code: "ATL", city: "Atlanta", state: "Georgia", image: "/images/airports/atl.jpg" },
-    { code: "LAX", city: "Los Angeles", state: "California", image: "/images/airports/lax.jpg" },
-    { code: "IAH", city: "Houston", state: "Texas", image: "/images/airports/IAH.jpg" },
-    { code: "AUS", city: "Austin", state: "Texas", image: "/images/airports/AUS.jpg" },
-    { code: "BOS", city: "Boston", state: "Massachusetts", image: "/images/airports/BOS.jpg" },
-    { code: "MCO", city: "Orlando", state: "Florida", image: "/images/airports/MCO.jpg" },
-    { code: "PHL", city: "Philadelphia", state: "Pennsylvania", image: "/images/airports/PHL.jpg" },
-    { code: "PHX", city: "Phoenix", state: "Arizona", image: "/images/airports/PHX.jpg" },
-    { code: "DCA", city: "Arlington", state: "Virginia", image: "/images/airports/DCA.jpg" },
-    { code: "DAL", city: "Dallas", state: "Texas", image: "/images/airports/DAL.jpg" },
-    { code: "JAX", city: "Jaxonville", state: "Florida", image: "/images/airports/JAX.jpg" },
-    { code: "SFO", city: "San Francisco", state: "California", image: "/images/airports/SFO.jpg" },
-    { code: "MIA", city: "Miami", state: "Florida", image: "/images/airports/MIA.jpg" },
-
-];
-
-// Duplicate the list so the loop is seamless
-const TRACK = [...AIRPORTS, ...AIRPORTS, ...AIRPORTS];
+import { fetchAirports, type Airport } from "@/lib/api";
 
 export default function AirportCarousel() {
+    const [airports, setAirports] = useState<Airport[]>([]);
     const trackRef = useRef<HTMLDivElement>(null);
     const offsetRef = useRef(0);
     const velocityRef = useRef(0.4);
     const targetVelocityRef = useRef(0.4);
 
+    // Fetch airports once on mount
     useEffect(() => {
+        fetchAirports()
+            .then((data) => setAirports(data))
+            .catch((err) => console.error("Failed to load airports:", err));
+    }, []);
+
+    // Auto-scroll loop
+    useEffect(() => {
+        if (airports.length === 0) return;
+
         let rafId: number;
         let decayId: ReturnType<typeof setTimeout> | undefined;
 
         const tick = () => {
-            // Ease velocity toward target
-            velocityRef.current += (targetVelocityRef.current - velocityRef.current) * 0.08;
+            velocityRef.current +=
+                (targetVelocityRef.current - velocityRef.current) * 0.08;
             offsetRef.current -= velocityRef.current;
 
             const track = trackRef.current;
             if (track) {
-                // When we've scrolled past one full set, snap back by that width
-                // so the loop looks continuous.
                 const oneSetWidth = track.scrollWidth / 3;
                 if (Math.abs(offsetRef.current) >= oneSetWidth) {
                     offsetRef.current += oneSetWidth;
@@ -71,7 +58,10 @@ export default function AirportCarousel() {
             window.removeEventListener("wheel", onWheel);
             if (decayId) clearTimeout(decayId);
         };
-    }, []);
+    }, [airports]);
+
+    // Build the looping track: 3 copies of the airport list for seamless scroll
+    const track = airports.length > 0 ? [...airports, ...airports, ...airports] : [];
 
     return (
         <section className="bg-cream py-24 px-10 overflow-hidden">
@@ -84,8 +74,8 @@ export default function AirportCarousel() {
 
             <div className="overflow-hidden">
                 <div ref={trackRef} className="flex gap-6 will-change-transform">
-                    {TRACK.map((airport, i) => (
-                        <AirportCard key={`${airport.code}-${i}`} {...airport} />
+                    {track.map((airport, i) => (
+                        <AirportCard key={`${airport.code}-${i}`} airport={airport} />
                     ))}
                 </div>
             </div>
@@ -93,34 +83,26 @@ export default function AirportCarousel() {
     );
 }
 
-function AirportCard({
-  code,
-  city,
-  state,
-  image,
-}: {
-  code: string;
-  city: string;
-  state: string;
-  image: string;
-}) {
-  return (
-    <div className="flex-shrink-0 w-108 h-96 rounded-lg overflow-hidden shadow-lg group cursor-pointer relative">
-      <div
-        className="absolute inset-0 bg-gradient-to-br from-amber to-amber-dark"
-        aria-hidden
-      />
-      <div
-        className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
-        style={{ backgroundImage: `url('${image}')` }}
-      />
-      <div className="absolute inset-0 bg-gradient-to-t from-stone via-stone/30 to-transparent" />
-      <div className="absolute bottom-0 left-0 right-0 p-6 text-cream">
-        <div className="font-serif text-4xl tracking-tight">{code}</div>
-        <div className="text-sm tracking-wider uppercase opacity-80 mt-1">
-          {city}, {state}
+function AirportCard({ airport }: { airport: Airport }) {
+    const imageSrc = `/images/airports/${airport.code}.jpg`;
+
+    return (
+        <div className="flex-shrink-0 w-96 h-72 rounded-lg overflow-hidden shadow-lg group cursor-pointer relative">
+            <div
+                className="absolute inset-0 bg-gradient-to-br from-amber to-amber-dark"
+                aria-hidden
+            />
+            <div
+                className="absolute inset-0 bg-cover bg-center transition-transform duration-700 group-hover:scale-105"
+                style={{ backgroundImage: `url('${imageSrc}')` }}
+            />
+            <div className="absolute inset-0 bg-gradient-to-t from-stone via-stone/30 to-transparent" />
+            <div className="absolute bottom-0 left-0 right-0 p-6 text-cream">
+                <div className="font-serif text-4xl tracking-tight">{airport.code}</div>
+                <div className="text-sm tracking-wider uppercase opacity-80 mt-1">
+                    {airport.city}, {airport.state}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 }
